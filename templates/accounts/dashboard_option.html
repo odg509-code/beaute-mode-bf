@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="page option-page">
+  <a class="back" href="{% url 'dashboard' %}">← Retour au tableau de bord</a>
+  <p class="eyebrow">MON ESPACE</p><h1>{{ title }}</h1><p class="lead">{{ description }}</p>
+  {% if section == 'settings' %}
+    <form method="post" class="settings-card">{% csrf_token %}
+      <div class="settings-grid">{% for field in form %}<div><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endfor %}</div>
+      <button class="btn gold" type="submit">Enregistrer les modifications</button>
+    </form>
+  {% else %}
+    <section class="empty-state"><div class="empty-icon">✨</div><h3>{{ title }}</h3><p>Cette rubrique est prête. Les données de votre activité apparaîtront ici au fur et à mesure.</p><a href="{% url 'dashboard' %}" class="btn gold">Voir mon tableau de bord</a></section>
+  {% endif %}
+</main>
+{% endblock %}

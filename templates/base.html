@@ -1,0 +1,152 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Beauté & Mode BF{% endblock %}</title>
+<meta name="description" content="Mode, beauté et savoir-faire burkinabè.">
+<link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+<div class="top">Livraison à Ouagadougou & Bobo-Dioulasso · Paiement à la livraison disponible</div>
+<header>
+<a class="brand" href="{% url 'home' %}">
+<b>BM</b>
+<span>Beauté & Mode
+<small>BURKINA FASO</small>
+</span>
+</a>
+<nav>
+<a href="{% url 'home' %}">Accueil</a>
+<a href="{% url 'shop' %}">Boutiques</a>
+<a href="{% url 'institutes' %}">Instituts</a>
+</nav>
+<div class="nav-actions">
+ <a href="{% url 'cart_detail' %}">Panier{% if cart_count %}
+     <em>{{ cart_count }}</em>{% endif %}
+ </a>{% if user.is_authenticated %}
+ <div class="user-menu">
+    <button class="user-btn" id="userBtn" type="button" aria-expanded="false">👤 {{ user.first_name|default:user.username }}</button>
+ <div class="user-dropdown" id="userDropdown">
+    <a href="{% url 'dashboard' %}">📊 Tableau de bord</a>
+    <a href="{% url 'favorites' %}">♡ Mes favoris</a>
+    <hr>
+    <form action="{% url 'logout' %}" method="post" class="logout-form">{% csrf_token %}
+        <button type="submit">🚪 Déconnexion</button>
+    </form>
+ </div>
+</div>{% else %}
+<a href="{% url 'login' %}">Connexion</a>
+<a class="header-signup" href="{% url 'signup' %}">Créer un compte</a>{% endif %}
+</div>
+</header>{% if messages %}
+<div class="messages">{% for message in messages %}
+    <p class="{{ message.tags }}">{{ message }}</p>{% endfor %}
+</div>{% endif %}{% block content %}{% endblock %}
+<footer>
+    <div>
+        <strong>Beauté & Mode BF</strong>
+        <p>La plateforme dédiée à la mode, à la beauté et au savoir-faire burkinabè.</p>
+    </div>
+    <div>
+        <strong>Découvrir</strong>
+        <a href="{% url 'shop' %}">La boutique</a>
+        <a href="{% url 'institutes' %}">Instituts & salons</a>
+    </div>
+    <div>
+        <strong>Besoin d’aide ?</strong>
+        <a href="{% url 'signup' %}">Créer un compte</a>
+        <a href="{% url 'login' %}">Se connecter</a>
+    </div>
+    <small>© 2026 Beauté & Mode BF · Données de démonstration</small>
+</footer>
+<script>
+    const userButton = document.getElementById('userBtn');
+    const userDropdown = document.getElementById('userDropdown');
+
+    userButton?.addEventListener('click', function() {
+        const expanded = userDropdown.classList.toggle('show');
+        userButton.setAttribute('aria-expanded', expanded);
+    });
+
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.user-menu')) {
+            userDropdown?.classList.remove('show');
+            userButton?.setAttribute('aria-expanded', 'false');
+        }
+    });
+</script>
+<style>
+    .header-signup {
+        background: #e65b99;
+        color: white;
+        padding: 9px 12px;
+        border-radius: 4px;
+    }
+
+    .user-menu {
+        position: relative;
+        display: inline-block;
+    }
+
+    .user-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #5a1d46;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        min-width: 200px;
+        border: 1px solid #f4c8da;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
+
+    .user-dropdown.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .user-dropdown a,
+    .user-dropdown button {
+        display: block;
+        width: 100%;
+        padding: 12px 16px;
+        color: #5a1d46;
+        text-align: left;
+        text-decoration: none;
+        font: inherit;
+        font-size: 14px;
+        border: none;
+        background: transparent;
+        cursor： pointer;
+        transition： background 0.2s;
+    }
+
+    .user-dropdown a:hover,
+    .user-dropdown button:hover {
+        background: #fff7fb;
+    }
+
+    .user-dropdown hr {
+=======
+    <div>
+=======
+    <div>
+=======
+    <div>

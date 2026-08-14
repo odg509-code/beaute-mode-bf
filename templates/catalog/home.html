@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="hero-grille">
+  <div class="hero-content">
+    <p class="eyebrow">L'ART DE VIVRE BURKINABÈ</p>
+    <h1>L'élégance africaine,<br><i>au cœur du Burkina Faso.</i></h1>
+    <p>Des pagnes, parfums, soins et savoir-faire locaux sélectionnés pour vous.</p>
+    <div class="hero-actions">
+      <a class="btn gold" href="{% url 'shop' %}">Explorer les boutiques →</a>
+      <a class="btn light" href="{% url 'signup' %}">Créer mon compte</a>
+    </div>
+  </div>
+
+  <div class="hero-image">
+    <img src="{% static 'images/hero/faso-dan-fani-tissage.png' %}" alt="Tissage Faso Dan Fani">
+  </div>
+</section>
+
+<section class="promo-section" aria-label="Offres et annonces">
+  <div class="promo-heading"><p class="eyebrow">À LA UNE</p><h2>Nos offres du moment</h2></div>
+  <div class="promo-track">
+    <a class="promo-card promo-textile" href="{% url 'shop' %}?category=tissus"><img src="{% static 'images/catalog/pagnes-wax.png' %}" alt="Sélection de pagnes colorés"><span><b>Pagnes & Wax</b><small>Des motifs qui racontent votre style</small></span></a>
+    <a class="promo-card promo-perfume" href="{% url 'shop' %}?category=beaute"><img src="{% static 'images/catalog/parfum-luxe.png' %}" alt="Parfum de luxe"><span><b>Parfums d'exception</b><small>Offrez une signature inoubliable</small></span></a>
+    <a class="promo-card promo-beauty" href="{% url 'institutes' %}"><img src="{% static 'images/catalog/soins-visage.png' %}" alt="Produits de soin et maquillage"><span><b>Beauté & soins</b><small>Prendre soin de soi, tout simplement</small></span></a>
+    <a class="promo-card promo-textile" href="{% url 'shop' %}?category=tissus" aria-hidden="true" tabindex="-1"><img src="{% static 'images/catalog/pagnes-wax.png' %}" alt=""><span><b>Pagnes & Wax</b><small>Des motifs qui racontent votre style</small></span></a>
+  </div>
+</section>
+
+<section class="section categories-spotlight">
+  <p class="eyebrow">NOS UNIVERS</p><h2>Explorez notre sélection</h2>
+  <div class="univers-grid">
+    <div class="univers-card" style="background-image: url('{% static 'images/catalog/collection-faso.png' %}');"><div class="univers-overlay"><h3>Tissus & Pagnes</h3><p>Faso Dan Fani, wax et imprimés à découvrir.</p><a href="{% url 'shop' %}?category=tissus" class="btn small">Explorer →</a></div></div>
+    <div class="univers-card" style="background-image: url('{% static 'images/catalog/beaute-peau.png' %}');"><div class="univers-overlay"><h3>Beauté & Bien-être</h3><p>Des essentiels choisis pour votre rituel.</p><a href="{% url 'shop' %}?category=beaute" class="btn small">Découvrir →</a></div></div>
+    <div class="univers-card" style="background-image: url('{% static 'images/catalog/tissage-noir-blanc.png' %}');"><div class="univers-overlay"><h3>Savoir-faire local</h3><p>Le tissage burkinabè à l'honneur.</p><a href="{% url 'shop' %}" class="btn small">Voir les boutiques →</a></div></div>
+  </div>
+</section>
+
+<section class="section account-section">
+  <div><p class="eyebrow">REJOIGNEZ LA COMMUNAUTÉ</p><h2>Un espace adapté<br><i>à votre activité.</i></h2><p class="lead">Créez un compte, connectez-vous et accédez à votre tableau de bord personnalisé.</p></div>
+  <div class="account-grid">
+    <a href="{% url 'signup' %}?role=customer"><b>🛍️ Client</b><span>Achetez, commandez et suivez vos favoris.</span></a>
+    <a href="{% url 'signup' %}?role=seller"><b>🏪 Vendeur</b><span>Présentez vos produits et suivez vos ventes.</span></a>
+    <a href="{% url 'signup' %}?role=institute"><b>✨ Institut</b><span>Recevez et gérez vos rendez-vous.</span></a>
+    <a href="{% url 'signup' %}?role=stylist"><b>🧵 Styliste</b><span>Développez votre portfolio créatif.</span></a>
+  </div>
+</section>
+
+<section class="section tan"><p class="eyebrow">SÉLECTIONNÉS POUR VOUS</p><h2>Les coups de cœur du moment</h2><div class="products">{% for product in featured %}{% include 'catalog/_product_card.html' %}{% empty %}<div class="empty-results"><p>Les premières boutiques arrivent bientôt.</p><a class="btn dark" href="{% url 'signup' %}?role=seller">Ouvrir ma boutique</a></div>{% endfor %}</div></section>
+
+<section class="section perfumes"><p class="eyebrow">PARFUMERIE & SOINS</p><h2>Les senteurs <i>de l'Afrique</i></h2><div class="perfume-showcase"><div class="perfume-item"><div class="perfume-image" style="background-image: url('{% static 'images/catalog/coffret-parfums.png' %}');"></div><h3>Parfums prestige</h3><p>Une sélection pour marquer chaque occasion.</p></div><div class="perfume-item"><div class="perfume-image" style="background-image: url('{% static 'images/catalog/rayon-soins.png' %}');"></div><h3>Soins & bien-être</h3><p>Vos produits beauté, réunis au même endroit.</p></div></div></section>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Créer un compte | Beauté & Mode BF{% endblock %}
+
+{% block content %}
+<main class="signup-page">
+  <section class="signup-intro" style="background-image: url('{% static 'images/catalog/collection-faso.png' %}');">
+    <div>
+      <p class="eyebrow">BIENVENUE CHEZ BEAUTÉ & MODE BF</p>
+      <h1>Votre talent,<br><i>votre espace.</i></h1>
+      <p>Une communauté pour acheter, vendre, créer et prendre soin de soi au Burkina Faso.</p>
+      <ul><li>Commandes et favoris pour les clients</li><li>Produits et ventes pour les vendeurs</li><li>Rendez-vous pour les instituts</li><li>Portfolio pour les stylistes</li></ul>
+    </div>
+  </section>
+  <section class="signup-form-panel">
+    <div class="signup-form-wrap">
+      <p class="eyebrow">INSCRIPTION</p><h2>Créer mon compte</h2><p class="signup-subtitle">Choisissez votre profil pour obtenir le bon tableau de bord.</p>
+      <form method="post" class="signup-form" novalidate>{% csrf_token %}
+        {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+        <div class="form-row"><div class="form-group"><label for="{{ form.first_name.id_for_label }}">Prénom</label>{{ form.first_name }}{{ form.first_name.errors }}</div><div class="form-group"><label for="{{ form.last_name.id_for_label }}">Nom</label>{{ form.last_name }}{{ form.last_name.errors }}</div></div>
+        <div class="form-group"><label for="{{ form.email.id_for_label }}">E-mail</label>{{ form.email }}{{ form.email.errors }}</div>
+        <div class="form-group"><label for="{{ form.username.id_for_label }}">Nom d'utilisateur</label>{{ form.username }}{{ form.username.errors }}<small>{{ form.username.help_text }}</small></div>
+        <div class="form-group profile-choice"><label for="{{ form.role.id_for_label }}">Je crée un compte pour</label>{{ form.role }}{{ form.role.errors }}<small>Vous accéderez au tableau de bord correspondant.</small></div>
+        <div class="form-row"><div class="form-group"><label for="{{ form.country.id_for_label }}">Pays</label>{{ form.country }}{{ form.country.errors }}</div><div class="form-group"><label for="{{ form.city.id_for_label }}">Ville</label>{{ form.city }}{{ form.city.errors }}</div></div>
+        <div class="form-group"><label for="{{ form.phone.id_for_label }}">Téléphone (facultatif)</label>{{ form.phone }}{{ form.phone.errors }}</div>
+        <div class="form-row"><div class="form-group"><label for="{{ form.password1.id_for_label }}">Mot de passe</label>{{ form.password1 }}{{ form.password1.errors }}<small>{{ form.password1.help_text }}</small></div><div class="form-group"><label for="{{ form.password2.id_for_label }}">Confirmation</label>{{ form.password2 }}{{ form.password2.errors }}</div></div>
+        <button type="submit" class="btn gold">Créer mon espace →</button>
+      </form>
+      <p class="form-footer">Vous avez déjà un compte ? <a href="{% url 'login' %}">Se connecter</a></p>
+    </div>
+  </section>
+</main>
+{% endblock %}

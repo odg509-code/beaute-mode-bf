@@ -1,0 +1,375 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="page dashboard">
+  <div class="dashboard-header">
+    <div class="dashboard-title">
+      <p class="eyebrow">MON COMPTE</p>
+      <h1>Bienvenue, <i>{{ user.first_name }}</i></h1>
+      <p class="lead">Gérez vos commandes et votre profil</p>
+    </div>
+  </div>
+
+  <div class="dashboard-container">
+    <!-- Sidebar Navigation -->
+    <details class="dashboard-menu"><summary aria-label="Ouvrir le menu du tableau de bord"><span></span><span></span><span></span></summary><nav class="dashboard-nav">
+        <a href="{% url 'customer_dashboard' %}" class="nav-item active">
+          <span class="icon">📦</span> Mes commandes
+        </a>
+        <a href="{% url 'favorites' %}" class="nav-item">
+          <span class="icon">❤️</span> Mes favoris
+        </a>
+        <a href="{% url 'dashboard_option' 'addresses' %}" class="nav-item">
+          <span class="icon">👤</span> Mon profil
+        </a>
+        <a href="{% url 'dashboard_option' 'settings' %}" class="nav-item">
+          <span class="icon">📍</span> Adresses
+        </a>
+        <a href="{% url 'dashboard_option' 'settings' %}" class="nav-item">
+          <span class="icon">⚙️</span> Paramètres
+        </a>
+        <form action="{% url 'logout' %}" method="post" class="dashboard-logout">
+          {% csrf_token %}
+          <button type="submit" class="nav-item logout"><span class="icon">🚪</span> Se déconnecter</button>
+        </form>
+      </nav></details>
+
+    <!-- Main Content -->
+    <div class="dashboard-content">
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-info">
+            <p class="stat-label">Commandes</p>
+            <p class="stat-value">{{ order_count }}</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-info">
+            <p class="stat-label">Total dépensé</p>
+            <p class="stat-value">{{ total_spent|floatformat:0 }} FCFA</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders Section -->
+      <section class="dashboard-section">
+        <h2>Mes commandes</h2>
+        
+        {% if orders %}
+          <div class="orders-table">
+            <div class="table-header">
+              <div class="col-id">Commande</div>
+              <div class="col-date">Date</div>
+              <div class="col-total">Total</div>
+              <div class="col-status">Statut</div>
+              <div class="col-action">Action</div>
+            </div>
+            
+            {% for order in orders %}
+              <div class="table-row">
+                <div class="col-id">#{{ order.id }}</div>
+                <div class="col-date">{{ order.created_at|date:"d/m/Y" }}</div>
+                <div class="col-total">{{ order.total|floatformat:0 }} FCFA</div>
+                <div class="col-status">
+                  <span class="status {% if order.status == 'completed' %}completed{% elif order.status == 'pending' %}pending{% endif %}">
+                    {{ order.get_status_display }}
+                  </span>
+                </div>
+                <div class="col-action">
+                  <a href="#" class="btn-small">Voir</a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-icon">📦</div>
+            <h3>Aucune commande</h3>
+            <p>Vous n'avez pas encore passé de commande. Découvrez notre sélection!</p>
+            <a href="{% url 'home' %}" class="btn gold">Découvrir la boutique</a>
+          </div>
+        {% endif %}
+      </section>
+    </div>
+  </div>
+</main>
+
+<style>
+  .dashboard {
+    padding: 0;
+    background: white;
+  }
+
+  .dashboard-header {
+    background: linear-gradient(135deg, #5a1d46 0%, #d85f92 100%);
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .dashboard-title h1 {
+    color: white;
+    margin: 10px 0;
+  }
+
+  .dashboard-title i {
+    color: #e65b99;
+  }
+
+  .dashboard-title .lead {
+    color: #fde7f0;
+    margin-top: 8px;
+  }
+
+  .dashboard-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 0;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: calc(100vh - 300px);
+  }
+
+  .dashboard-sidebar {
+    background: #fff7fb;
+    border-right: 1px solid #f4c8da;
+    padding: 30px 0;
+    position: sticky;
+    top: 0;
+    height: fit-content;
+  }
+
+  .dashboard-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    color: #5a1d46;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+  }
+
+  .nav-item:hover {
+    background: #fde7f0;
+    border-left-color: #e65b99;
+  }
+
+  .nav-item.active {
+    background: #fde7f0;
+    border-left-color: #e65b99;
+    font-weight: 600;
+  }
+
+  .nav-item.logout {
+    margin-top: auto;
+    color: #d32f2f;
+  }
+
+  .nav-item .icon {
+    font-size: 18px;
+  }
+
+  .dashboard-content {
+    padding: 40px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .stat-card {
+    background: linear-gradient(135deg, #fff7fb 0%, #fde7f0 100%);
+    border: 1px solid #edb8d0;
+    border-radius: 8px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .stat-icon {
+    font-size: 40px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: #999;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #5a1d46;
+    margin: 6px 0 0 0;
+  }
+
+  .dashboard-section {
+    margin-bottom: 40px;
+  }
+
+  .dashboard-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: #5a1d46;
+    margin-bottom: 20px;
+  }
+
+  .orders-table {
+    border: 1px solid #f4c8da;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .table-header {
+    display: grid;
+    grid-template-columns: 100px 120px 120px 120px 100px;
+    gap: 0;
+    background: #fde7f0;
+    padding: 16px 20px;
+    font-weight: 600;
+    color: #5a1d46;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+
+  .table-row {
+    display: grid;
+    grid-template-columns: 100px 120px 120px 120px 100px;
+    gap: 0;
+    padding: 16px 20px;
+    border-top: 1px solid #f4c8da;
+    align-items: center;
+    transition: background 0.2s;
+  }
+
+  .table-row:hover {
+    background: #fff7fb;
+  }
+
+  .col-id {
+    font-weight: 600;
+    color: #5a1d46;
+  }
+
+  .col-date {
+    color: #666;
+    font-size: 14px;
+  }
+
+  .col-total {
+    font-weight: 600;
+    color: #e65b99;
+  }
+
+  .col-status {
+    text-align: center;
+  }
+
+  .status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .status.pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  .status.completed {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .btn-small {
+    padding: 6px 12px;
+    background: #e65b99;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+
+  .btn-small:hover {
+    background: #c94780;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff7fb;
+    border-radius: 8px;
+  }
+
+  .empty-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+  }
+
+  .empty-state h3 {
+    color: #5a1d46;
+    margin-bottom: 10px;
+  }
+
+  .empty-state p {
+    color: #999;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 1024px) {
+    .dashboard-container {
+      grid-template-columns: 1fr;
+    }
+
+    .dashboard-sidebar {
+      border-right: none;
+      border-bottom: 1px solid #f4c8da;
+      padding: 20px;
+    }
+
+    .dashboard-nav {
+      flex-direction: row;
+      overflow-x: auto;
+      gap: 10px;
+    }
+
+    .nav-item {
+      white-space: nowrap;
+    }
+
+    .table-header,
+    .table-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+</style>
+{% endblock %}

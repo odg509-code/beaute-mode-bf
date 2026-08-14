@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="page form-page">
+  <p class="eyebrow">BIENVENUE</p>
+  <h1>Heureux de vous <i>revoir.</i></h1>
+  
+  <form method="post" class="form-card" novalidate>
+    {% csrf_token %}
+    
+    <div class="form-group">
+      <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+      {{ form.username }}
+      {% if form.username.errors %}
+        <small class="error">{{ form.username.errors.0 }}</small>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+      {{ form.password }}
+      {% if form.password.errors %}
+        <small class="error">{{ form.password.errors.0 }}</small>
+      {% endif %}
+    </div>
+
+    {% if form.non_field_errors %}
+      <div class="form-errors">
+        {% for error in form.non_field_errors %}
+          <p class="error">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <button type="submit" class="btn gold">Se connecter</button>
+    
+    <p class="form-footer">
+      Pas encore de compte? <a href="{% url 'signup' %}">Créer mon compte</a>
+    </p>
+  </form>
+</main>
+
+<style>
+  .form-page {
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 40px 20px;
+  }
+
+  .form-card {
+    background: #fff7fb;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #5a1d46;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .form-group input {
+    padding: 12px 14px;
+    border: 1px solid #edb8d0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    background: white;
+    transition: border-color 0.3s ease;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: #e65b99;
+    box-shadow: 0 0 0 3px rgba(188, 138, 67, 0.1);
+  }
+
+  .form-group .error {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  .form-errors {
+    background: #ffebee;
+    border: 1px solid #ef5350;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+  }
+
+  .form-errors .error {
+    margin: 0;
+    color: #c62828;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn.gold {
+    background: linear-gradient(135deg, #e65b99 0%, #c94780 100%);
+    color: white;
+  }
+
+  .btn.gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(188, 138, 67, 0.3);
+  }
+
+  .form-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .form-footer a {
+    color: #e65b99;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .form-footer a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 700px) {
+    .form-card {
+      padding: 20px;
+    }
+  }
+</style>
+{% endblock %}

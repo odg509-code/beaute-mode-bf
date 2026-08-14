@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Finaliser la commande · Beauté & Mode BF{% endblock %}
+{% block content %}
+<main class="page checkout">
+  <p class="eyebrow">COMMANDE SÉCURISÉE</p><h1>Finaliser votre <i>commande.</i></h1>
+  <div class="checkout-grid">
+    <form method="post" class="checkout-form">{% csrf_token %}
+      <h2>Livraison et paiement</h2>
+      {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+      {% for field in form %}<p><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="error">{{ error }}</small>{% endfor %}</p>{% endfor %}
+      <button class="btn gold" type="submit">Confirmer la commande</button>
+      <p class="reassure">Aucun paiement n'est débité ici. Le prestataire choisi sera connecté ultérieurement.</p>
+    </form>
+    <aside class="order-summary"><h2>Récapitulatif</h2>{% for line in lines %}<p>{{ line.quantity }} × {{ line.product.name }}<b>{{ line.line_total|floatformat:0 }} FCFA</b></p>{% endfor %}<hr><p class="total">Total <b>{{ total|floatformat:0 }} FCFA</b></p></aside>
+  </div>
+</main>
+{% endblock %}

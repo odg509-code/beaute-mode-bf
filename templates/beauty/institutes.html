@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Instituts & Salons | Beauté & Mode BF{% endblock %}
+
+{% block content %}
+
+<main class="page">
+  <section class="page-header">
+    <p class="eyebrow">BEAUTÉ & BIEN-ÊTRE</p>
+    <h1>Votre moment, <i>votre adresse.</i></h1>
+    <p class="lead">Des professionnels proches de vous, sélectionnés avec soin pour leur expertise et leur passion.</p>
+  </section>
+
+  <div class="institutes">
+    {% for institute in institutes %}
+      <article class="institute-card">
+        <div class="institute-image">
+          <img src="{{ institute.image_url }}" alt="{{ institute.name }}">
+        </div>
+        <div class="institute-info">
+          <div class="institute-header">
+            <small class="location">
+              <span class="badge">Ouvert</span>
+              {{ institute.city }}
+            </small>
+            <h2>{{ institute.name }}</h2>
+            <p class="address">📍 {{ institute.neighborhood }} · {{ institute.address }}</p>
+          </div>
+
+          <div class="services">
+            <h3>Services proposés</h3>
+            <div class="service-list">
+              {% for service in institute.services.all %}
+                <span class="service-badge">
+                  <strong>{{ service.name }}</strong>
+                  <em>{{ service.price|floatformat:0 }} F</em>
+                </span>
+              {% empty %}
+                <p>Services à venir</p>
+              {% endfor %}
+            </div>
+          </div>
+
+          <a class="btn dark" href="{% url 'book' institute.slug %}">
+            Prendre rendez-vous →
+          </a>
+        </div>
+      </article>
+    {% empty %}
+      <div class="empty-institutes">
+        <p>Les instituts partenaires arrivent bientôt.</p>
+        <p>Revenez régulièrement pour découvrir nos meilleures adresses!</p>
+      </div>
+    {% endfor %}
+  </div>
+</main>
+
+{% endblock %}

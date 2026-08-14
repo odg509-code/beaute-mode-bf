@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Mes favoris · Beauté & Mode BF{% endblock %}
+{% block content %}
+<main class="page"><p class="eyebrow">MON COMPTE</p><h1>Mes <i>favoris.</i></h1><p class="lead">Retrouvez ici les produits que vous souhaitez garder à portée de main.</p>
+  <div class="products grid">{% for product in products %}{% include 'catalog/_product_card.html' %}{% empty %}<div class="empty"><h2>Pas encore de favoris</h2><p>Explorez notre boutique pour enregistrer vos coups de cœur.</p><a class="btn gold" href="{% url 'shop' %}">Découvrir la boutique</a></div>{% endfor %}</div>
+</main>
+{% endblock %}

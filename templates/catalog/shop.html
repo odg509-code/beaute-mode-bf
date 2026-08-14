@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Boutique | Beauté & Mode BF{% endblock %}
+
+{% block content %}
+
+<main class="page">
+  <section class="page-header">
+    <p class="eyebrow">LA BOUTIQUE</p>
+    <h1>Des trésors choisis <i>pour vous.</i></h1>
+    <p class="lead">Découvrez notre sélection exclusive de tissus, vêtements traditionnels, parfums et produits de beauté.</p>
+  </section>
+
+  <form class="search" method="get">
+    <input name="q" value="{{ query }}" placeholder="Faso Dan Fani bleu, parfum homme…">
+    <button type="submit">Rechercher</button>
+  </form>
+
+  <div class="filters">
+    <h3>Filtrer par catégorie</h3>
+    <div class="chips">
+      <a href="{% url 'shop' %}" class="{% if not current_category %}active{% endif %}">
+        Tous les produits
+      </a>
+      {% for category in categories %}
+        <a href="?category={{ category.slug }}" class="{% if current_category == category.slug %}active{% endif %}">
+          {{ category.name }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="results-info">
+    <p class="results">
+      <strong>{{ products|length }}</strong> produit{{ products|pluralize }} trouvé{{ products|pluralize }}
+      {% if query %}pour "<strong>{{ query }}</strong>"{% endif %}
+    </p>
+  </div>
+
+  <div class="products grid">
+    {% for product in products %}
+      {% include 'catalog/_product_card.html' %}
+    {% empty %}
+      <div class="empty-results">
+        <p>Aucun résultat trouvé.</p>
+        <p>Essayez une autre recherche ou une autre catégorie.</p>
+        <a href="{% url 'shop' %}" class="btn dark">Voir tous les produits</a>
+      </div>
+    {% endfor %}
+  </div>
+</main>
+
+{% endblock %}
