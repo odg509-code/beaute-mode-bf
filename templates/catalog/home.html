@@ -3,45 +3,190 @@
 
 {% block content %}
 <style>
-  .hero-image {
-    overflow: hidden;
+  /* ---------- Layout marketplace (inspiré Jumia) ---------- */
+  .market-hero {
+    display: grid;
+    grid-template-columns: 240px 1fr 220px;
+    gap: 16px;
+    max-width: 1240px;
+    margin: 24px auto;
+    padding: 0 16px;
+    align-items: stretch;
   }
 
-  .hero-image img {
+  /* Sidebar catégories */
+  .cat-sidebar {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .cat-sidebar ul { list-style: none; margin: 0; padding: 8px 0; }
+  .cat-sidebar li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    color: #2b2b2b;
+    text-decoration: none;
+    font-size: 0.92rem;
+    transition: background 0.15s;
+  }
+  .cat-sidebar li a:hover { background: #fdf1f6; color: #c2185b; }
+  .cat-sidebar .cat-icon { font-size: 1.05rem; width: 20px; text-align: center; }
+
+  /* Banner central animé */
+  .market-banner {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    min-height: 380px;
+    display: flex;
+    align-items: flex-end;
+    background: #1a1a2e;
+  }
+  .market-banner img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
     animation: heroFadeIn 1s ease-out both,
                heroKenBurns 20s ease-in-out 1s infinite alternate;
   }
+  .market-banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.05) 55%, rgba(0,0,0,0.1) 100%);
+  }
+  .market-banner-text {
+    position: relative;
+    z-index: 2;
+    padding: 28px 32px;
+    color: #fff;
+  }
+  .market-banner-text .eyebrow { color: #f7c948; letter-spacing: 1px; font-size: 0.78rem; }
+  .market-banner-text h1 { font-size: 1.9rem; margin: 6px 0 8px; line-height: 1.2; }
+  .market-banner-text p { margin: 0 0 16px; opacity: 0.9; max-width: 420px; }
+  .market-banner-text .hero-actions a { margin-right: 10px; }
 
   @keyframes heroFadeIn {
     from { opacity: 0; transform: scale(1.02); }
     to   { opacity: 1; transform: scale(1); }
   }
-
   @keyframes heroKenBurns {
     0%   { transform: scale(1) translate(0, 0); }
-    100% { transform: scale(1.1) translate(-2%, -1%); }
+    100% { transform: scale(1.12) translate(-2%, -1%); }
+  }
+
+  /* Colonne promo droite */
+  .promo-side { display: flex; flex-direction: column; gap: 16px; }
+  .promo-side a {
+    position: relative;
+    display: block;
+    border-radius: 10px;
+    overflow: hidden;
+    min-height: 182px;
+    color: #fff;
+    text-decoration: none;
+  }
+  .promo-side a img {
+    width: 100%; height: 100%; object-fit: cover;
+    position: absolute; inset: 0;
+    transition: transform 0.4s ease;
+  }
+  .promo-side a:hover img { transform: scale(1.06); }
+  .promo-side a::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.55), rgba(0,0,0,0.05));
+  }
+  .promo-side a span {
+    position: relative; z-index: 2;
+    display: block; padding: 14px;
+    font-weight: 600; align-self: flex-end;
+  }
+
+  /* Rangée d'icônes avantages */
+  .perks-row {
+    max-width: 1240px;
+    margin: 0 auto 32px;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+  .perk-card {
+    background: #fff;
+    border: 1px solid #f0e3ea;
+    border-radius: 12px;
+    text-align: center;
+    padding: 18px 10px;
+  }
+  .perk-card .perk-icon { font-size: 1.7rem; margin-bottom: 8px; }
+  .perk-card b { display: block; font-size: 0.88rem; }
+  .perk-card small { color: #888; font-size: 0.78rem; }
+
+  @media (max-width: 900px) {
+    .market-hero { grid-template-columns: 1fr; }
+    .cat-sidebar { order: 2; }
+    .market-banner { order: 1; }
+    .promo-side { order: 3; flex-direction: row; }
+    .promo-side a { min-height: 140px; }
+    .perks-row { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 
-<section class="hero-grille">
-  <div class="hero-content">
-    <p class="eyebrow">L'ART DE VIVRE BURKINABÈ</p>
-    <h1>L'élégance africaine,<br><i>au cœur du Burkina Faso.</i></h1>
-    <p>Des pagnes, parfums, soins et savoir-faire locaux sélectionnés pour vous.</p>
-    <div class="hero-actions">
-      <a class="btn gold" href="{% url 'shop' %}">Explorer les boutiques →</a>
-      <a class="btn light" href="{% url 'signup' %}">Créer mon compte</a>
+<div class="market-hero">
+  <!-- Sidebar catégories -->
+  <nav class="cat-sidebar">
+    <ul>
+      <li><a href="{% url 'shop' %}?category=tissus"><span class="cat-icon">🧵</span> Tissus & Pagnes</a></li>
+      <li><a href="{% url 'shop' %}?category=beaute"><span class="cat-icon">💄</span> Beauté & Soins</a></li>
+      <li><a href="{% url 'shop' %}?category=parfums"><span class="cat-icon">🌸</span> Parfums</a></li>
+      <li><a href="{% url 'shop' %}?category=bijoux"><span class="cat-icon">💍</span> Bijoux & Accessoires</a></li>
+      <li><a href="{% url 'institutes' %}"><span class="cat-icon">✨</span> Instituts</a></li>
+      <li><a href="{% url 'shop' %}?sort=nouveautes"><span class="cat-icon">🆕</span> Nouveautés</a></li>
+      <li><a href="{% url 'shop' %}"><span class="cat-icon">🛍️</span> Toutes les boutiques</a></li>
+    </ul>
+  </nav>
+
+  <!-- Banner central animé -->
+  <div class="market-banner">
+    <img src="{% static 'images/hero/faso-dan-fani-tissage.png' %}" alt="Tissage Faso Dan Fani">
+    <div class="market-banner-text">
+      <p class="eyebrow">L'ART DE VIVRE BURKINABÈ</p>
+      <h1>L'élégance africaine,<br><i>au cœur du Burkina Faso.</i></h1>
+      <p>Des pagnes, parfums, soins et savoir-faire locaux sélectionnés pour vous.</p>
+      <div class="hero-actions">
+        <a class="btn gold" href="{% url 'shop' %}">Explorer les boutiques →</a>
+        <a class="btn light" href="{% url 'signup' %}">Créer mon compte</a>
+      </div>
     </div>
   </div>
 
-  <div class="hero-image">
-    <img src="{% static 'images/hero/faso-dan-fani-tissage.png' %}" alt="Tissage Faso Dan Fani">
+  <!-- Colonne promo droite -->
+  <div class="promo-side">
+    <a href="{% url 'signup' %}?role=seller">
+      <img src="{% static 'images/catalog/collection-faso.png' %}" alt="Ouvrir une boutique">
+      <span>Vendez sur Beauté & Mode →</span>
+    </a>
+    <a href="{% url 'shop' %}?category=beaute">
+      <img src="{% static 'images/catalog/soins-visage.png' %}" alt="Nouveautés beauté">
+      <span>Nouveautés Beauté →</span>
+    </a>
   </div>
-</section>
+</div>
+
+<!-- Rangée d'avantages -->
+<div class="perks-row">
+  <div class="perk-card"><div class="perk-icon">🚚</div><b>Livraison rapide</b><small>Ouaga & Bobo-Dioulasso</small></div>
+  <div class="perk-card"><div class="perk-icon">💵</div><b>Paiement à la livraison</b><small>Payez à réception</small></div>
+  <div class="perk-card"><div class="perk-icon">🏪</div><b>Vendeurs locaux</b><small>Savoir-faire burkinabè</small></div>
+  <div class="perk-card"><div class="perk-icon">✅</div><b>Produits authentiques</b><small>Qualité sélectionnée</small></div>
+  <div class="perk-card"><div class="perk-icon">💬</div><b>Support client</b><small>Assistance rapide</small></div>
+</div>
 
 <section class="promo-section" aria-label="Offres et annonces">
   <div class="promo-heading"><p class="eyebrow">À LA UNE</p><h2>Nos offres du moment</h2></div>
