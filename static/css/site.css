@@ -1208,3 +1208,23 @@ footer small {
     padding: 30px 5%;
   }
 }
+.hero-media {
+  overflow: hidden;
+  border-radius: 8px; /* garde ton style actuel si différent */
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  animation: kenburns 18s ease-in-out infinite alternate;
+}
+
+@keyframes kenburns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.12) translate(-2%, -1%);
+  }
+}
