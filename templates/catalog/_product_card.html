@@ -1,1 +1,22 @@
-<article class="product"><a href="{{ product.get_absolute_url }}"><img src="{{ product.image_url }}" alt="{{ product.name }}"></a><div><small>{{ product.category.name }}</small><h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3><p class="price">{{ product.price|floatformat:0 }} FCFA {% if product.old_price %}<del>{{ product.old_price|floatformat:0 }}</del>{% endif %}</p><div class="card-actions"><form action="{% url 'cart_add' product.id %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button>Ajouter au panier +</button></form>{% if user.is_authenticated %}<form action="{% url 'toggle_favorite' product.id %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button class="heart" title="Ajouter ou retirer des favoris" aria-label="Ajouter ou retirer des favoris">♡</button></form>{% endif %}</div></div></article>
+<article class="product">
+    <a href="{{ product.get_absolute_url }}">
+    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+    </a>
+   <div>
+    <small>{{ product.category.name }}</small>
+    <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+    <p class="price">{{ product.price|floatformat:0 }} FCFA {% if product.old_price %}
+        <del>{{ product.old_price|floatformat:0 }}</del>
+        {% endif %}</p>
+        <div class="card-actions">
+            <form action="{% url 'cart_add' product.id %}" method="post">{% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button>Ajouter au panier +</button>
+            </form>{% if user.is_authenticated %}
+            <form action="{% url 'toggle_favorite' product.id %}" method="post">{% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button class="heart" title="Ajouter ou retirer des favoris" aria-label="Ajouter ou retirer des favoris">♡</button>
+            </form>{% endif %}
+        </div>
+    </div>
+</article>

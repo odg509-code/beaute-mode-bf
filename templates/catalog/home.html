@@ -35,7 +35,7 @@
   .cat-sidebar li a:hover { background: #fdf1f6; color: #c2185b; }
   .cat-sidebar .cat-icon { font-size: 1.05rem; width: 20px; text-align: center; }
 
-  /* Banner central animé */
+  /* Banner central : carrousel fondu/déroulant */
   .market-banner {
     position: relative;
     border-radius: 10px;
@@ -45,19 +45,42 @@
     align-items: flex-end;
     background: #1a1a2e;
   }
-  .market-banner img {
+  .banner-slide {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    animation: heroFadeIn 1s ease-out both,
-               heroKenBurns 20s ease-in-out 1s infinite alternate;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transform: scaleY(0.85) translateY(-16px);
+    transform-origin: top center;
+    animation: slideUnrollFade 18s ease-in-out infinite;
   }
+  .banner-slide.slide-1 {
+    background-image: url('{% static "images/hero/pagne-noir-orange.png" %}');
+    animation-delay: 0s;
+  }
+  .banner-slide.slide-2 {
+    background-image: url('{% static "images/hero/pagne-vert.png" %}');
+    animation-delay: 6s;
+  }
+  .banner-slide.slide-3 {
+    background-image: url('{% static "images/hero/pagne-gris.png" %}');
+    animation-delay: 12s;
+  }
+
+  @keyframes slideUnrollFade {
+    0%   { opacity: 0; transform: scaleY(0.85) translateY(-16px); }
+    8%   { opacity: 1; transform: scaleY(1) translateY(0); }
+    28%  { opacity: 1; transform: scaleY(1) translateY(0); }
+    36%  { opacity: 0; transform: scaleY(1.04) translateY(8px); }
+    100% { opacity: 0; }
+  }
+
   .market-banner::after {
     content: "";
     position: absolute;
     inset: 0;
+    z-index: 1;
     background: linear-gradient(0deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.05) 55%, rgba(0,0,0,0.1) 100%);
   }
   .market-banner-text {
@@ -70,15 +93,6 @@
   .market-banner-text h1 { font-size: 1.9rem; margin: 6px 0 8px; line-height: 1.2; }
   .market-banner-text p { margin: 0 0 16px; opacity: 0.9; max-width: 420px; }
   .market-banner-text .hero-actions a { margin-right: 10px; }
-
-  @keyframes heroFadeIn {
-    from { opacity: 0; transform: scale(1.02); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-  @keyframes heroKenBurns {
-    0%   { transform: scale(1) translate(0, 0); }
-    100% { transform: scale(1.12) translate(-2%, -1%); }
-  }
 
   /* Colonne promo droite */
   .promo-side { display: flex; flex-direction: column; gap: 16px; }
@@ -152,9 +166,11 @@
     </ul>
   </nav>
 
-  <!-- Banner central animé -->
+  <!-- Banner central : carrousel fondu/déroulant -->
   <div class="market-banner">
-    <img src="{% static 'images/hero/faso-dan-fani-tissage.png' %}" alt="Tissage Faso Dan Fani">
+    <div class="banner-slide slide-1"></div>
+    <div class="banner-slide slide-2"></div>
+    <div class="banner-slide slide-3"></div>
     <div class="market-banner-text">
       <p class="eyebrow">L'ART DE VIVRE BURKINABÈ</p>
       <h1>L'élégance africaine,<br><i>au cœur du Burkina Faso.</i></h1>

@@ -1,1 +1,28 @@
-{% extends 'base.html' %}{% block content %}<main class="page detail"><a class="back" href="{% url 'shop' %}">← Retour à la boutique</a><div><img src="{{ product.image_url }}" alt="{{ product.name }}"><section><p class="eyebrow">{{ product.category.name }} · {{ product.seller.get_full_name|default:product.seller.username }}</p><h1>{{ product.name }}</h1><p class="rating">★ {{ product.average_rating|default:'Nouveau' }} · avis clients</p><p class="price big">{{ product.price|floatformat:0 }} FCFA {% if product.old_price %}<del>{{ product.old_price|floatformat:0 }} FCFA</del>{% endif %}</p><p>{{ product.description }}</p><p class="seller">Vendu par <b>{{ product.seller.get_full_name|default:product.seller.username }}</b> · {{ product.city }}</p><div class="detail-actions"><form action="{% url 'cart_add' product.id %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{% url 'cart_detail' %}"><button class="btn gold">Ajouter au panier</button></form><form action="{% url 'toggle_favorite' product.id %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button class="btn outline" type="submit">{% if is_favorited %}♥ Retirer des favoris{% else %}♡ Ajouter aux favoris{% endif %}</button></form></div><p class="reassure">✓ Paiement à la livraison disponible · ✓ Retrait en boutique</p></section></div></main>{% endblock %}
+{% extends 'base.html' %}{% block content %}
+<main class="page detail">
+    <a class="back" href="{% url 'shop' %}">← Retour à la boutique</a>
+    <div>
+        <img src="{{ product.image_url }}" alt="{{ product.name }}"><section>
+            <p class="eyebrow">{{ product.category.name }} · {{ product.seller.get_full_name|default:product.seller.username }}</p>
+            <h1>{{ product.name }}</h1>
+            <p class="rating">★ {{ product.average_rating|default:'Nouveau' }} · avis clients</p>
+            <p class="price big">{{ product.price|floatformat:0 }} FCFA {% if product.old_price %}
+                <del>{{ product.old_price|floatformat:0 }} FCFA</del>{% endif %}
+            </p>
+            <p>{{ product.description }}
+
+            </p>
+            <p class="seller">Vendu par 
+                <b>{{ product.seller.get_full_name|default:product.seller.username }}</b> · {{ product.city }}
+            </p>
+            <div class="detail-actions">
+                <form action="{% url 'cart_add' product.id %}" method="post">{% csrf_token %}
+                    <input type="hidden" name="next" value="{% url 'cart_detail' %}">
+                    <button class="btn gold">Ajouter au panier</button>
+                </form>
+                <form action="{% url 'toggle_favorite' product.id %}" method="post">{% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <button class="btn outline" type="submit">{% if is_favorited %}♥ Retirer des favoris{% else %}♡ Ajouter aux favoris{% endif %}</button>
+                </form>
+            </div>
+            <p class="reassure">✓ Paiement à la livraison disponible · ✓ Retrait en boutique</p></section></div></main>{% endblock %}
