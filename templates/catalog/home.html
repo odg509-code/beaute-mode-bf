@@ -3,13 +3,13 @@
 
 {% block content %}
 <style>
-  /* ---------- Layout marketplace (inspiré Jumia) ---------- */
+  /* ---------- Layout marketplace plein écran ---------- */
   .market-hero {
     display: grid;
     grid-template-columns: 240px 1fr 220px;
     gap: 16px;
-    max-width: 1240px;
-    margin: 24px auto;
+    max-width: 1600px;
+    margin: 16px auto 24px;
     padding: 0 16px;
     align-items: stretch;
   }
@@ -20,6 +20,7 @@
     border: 1px solid #eee;
     border-radius: 10px;
     overflow: hidden;
+    height: fit-content;
   }
   .cat-sidebar ul { list-style: none; margin: 0; padding: 8px 0; }
   .cat-sidebar li a {
@@ -35,12 +36,13 @@
   .cat-sidebar li a:hover { background: #fdf1f6; color: #c2185b; }
   .cat-sidebar .cat-icon { font-size: 1.05rem; width: 20px; text-align: center; }
 
-  /* Banner central : carrousel fondu/déroulant */
+  /* Banner central : plein écran, carrousel roulant droite → gauche */
   .market-banner {
     position: relative;
     border-radius: 10px;
     overflow: hidden;
-    min-height: 380px;
+    min-height: calc(100vh - 190px);
+    max-height: 820px;
     display: flex;
     align-items: flex-end;
     background: #1a1a2e;
@@ -51,9 +53,8 @@
     background-size: cover;
     background-position: center;
     opacity: 0;
-    transform: scaleY(0.85) translateY(-16px);
-    transform-origin: top center;
-    animation: slideUnrollFade 18s ease-in-out infinite;
+    transform: translateX(8%);
+    animation: slideRollFade 18s ease-in-out infinite;
   }
   .banner-slide.slide-1 {
     background-image: url('{% static "images/hero/pagne-noir-orange.png" %}');
@@ -68,30 +69,46 @@
     animation-delay: 12s;
   }
 
-  @keyframes slideUnrollFade {
-    0%   { opacity: 0; transform: scaleY(0.85) translateY(-16px); }
-    8%   { opacity: 1; transform: scaleY(1) translateY(0); }
-    28%  { opacity: 1; transform: scaleY(1) translateY(0); }
-    36%  { opacity: 0; transform: scaleY(1.04) translateY(8px); }
-    100% { opacity: 0; }
+  /* Entre depuis la droite, ressort vers la gauche */
+  @keyframes slideRollFade {
+    0%   { opacity: 0; transform: translateX(10%); }
+    8%   { opacity: 1; transform: translateX(0); }
+    28%  { opacity: 1; transform: translateX(0); }
+    36%  { opacity: 0; transform: translateX(-10%); }
+    100% { opacity: 0; transform: translateX(-10%); }
   }
 
+  /* Scrim global pour lisibilité, quelle que soit l'image affichée */
   .market-banner::after {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: linear-gradient(0deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.05) 55%, rgba(0,0,0,0.1) 100%);
+    background: linear-gradient(90deg, rgba(10,6,10,0.72) 0%, rgba(10,6,10,0.42) 38%, rgba(10,6,10,0.05) 65%),
+                linear-gradient(0deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.05) 45%);
   }
+
+  /* Bloc de texte avec fond dédié : toujours lisible */
   .market-banner-text {
     position: relative;
     z-index: 2;
-    padding: 28px 32px;
+    padding: 32px 36px;
+    max-width: 560px;
     color: #fff;
   }
-  .market-banner-text .eyebrow { color: #f7c948; letter-spacing: 1px; font-size: 0.78rem; }
-  .market-banner-text h1 { font-size: 1.9rem; margin: 6px 0 8px; line-height: 1.2; }
-  .market-banner-text p { margin: 0 0 16px; opacity: 0.9; max-width: 420px; }
+  .market-banner-text .eyebrow { color: #f7c948; letter-spacing: 1px; font-size: 0.8rem; }
+  .market-banner-text h1 {
+    font-size: 2.4rem;
+    margin: 8px 0 12px;
+    line-height: 1.2;
+    text-shadow: 0 2px 14px rgba(0,0,0,0.5);
+  }
+  .market-banner-text p {
+    margin: 0 0 20px;
+    opacity: 0.95;
+    font-size: 1rem;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.45);
+  }
   .market-banner-text .hero-actions a { margin-right: 10px; }
 
   /* Colonne promo droite */
@@ -101,6 +118,7 @@
     display: block;
     border-radius: 10px;
     overflow: hidden;
+    flex: 1;
     min-height: 182px;
     color: #fff;
     text-decoration: none;
@@ -114,17 +132,18 @@
   .promo-side a::after {
     content: "";
     position: absolute; inset: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,0.55), rgba(0,0,0,0.05));
+    background: linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.1));
   }
   .promo-side a span {
     position: relative; z-index: 2;
     display: block; padding: 14px;
     font-weight: 600; align-self: flex-end;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
   }
 
   /* Rangée d'icônes avantages */
   .perks-row {
-    max-width: 1240px;
+    max-width: 1600px;
     margin: 0 auto 32px;
     padding: 0 16px;
     display: grid;
@@ -144,11 +163,12 @@
 
   @media (max-width: 900px) {
     .market-hero { grid-template-columns: 1fr; }
-    .cat-sidebar { order: 2; }
-    .market-banner { order: 1; }
+    .cat-sidebar { order: 2; height: auto; }
+    .market-banner { order: 1; min-height: 70vh; max-height: none; }
     .promo-side { order: 3; flex-direction: row; }
     .promo-side a { min-height: 140px; }
     .perks-row { grid-template-columns: repeat(2, 1fr); }
+    .market-banner-text h1 { font-size: 1.7rem; }
   }
 </style>
 
@@ -166,7 +186,7 @@
     </ul>
   </nav>
 
-  <!-- Banner central : carrousel fondu/déroulant -->
+  <!-- Banner central : plein écran, carrousel roulant -->
   <div class="market-banner">
     <div class="banner-slide slide-1"></div>
     <div class="banner-slide slide-2"></div>

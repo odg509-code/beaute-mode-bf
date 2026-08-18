@@ -826,14 +826,7 @@ nav a:hover {
   grid-template-columns: 280px 1fr;
   gap: 30px;
   background: white;
-  border-radius: 8px;<section class="hero" style="background-image: url('{% static 'images/hero/faso-dan-fani-tissage.png' %}');">
-  <div class="hero-content">
-    <p class="eyebrow">L'ART DE VIVRE BURKINABÈ</p>
-    <h1>L'élégance africaine,<br><i>au cœur du Burkina Faso.</i></h1>
-    <p>Des pagnes, parfums, soins et savoir-faire locaux sélectionnés pour vous.</p>
-    <div class="hero-actions"><a class="btn gold" href="{% url 'shop' %}">Explorer les boutiques →</a><a class="btn light" href="{% url 'signup' %}">Créer mon compte</a></div>
-  </div>
-</section>
+  border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
@@ -1208,16 +1201,10 @@ footer small {
     padding: 30px 5%;
   }
 }
+
 .hero-media {
   overflow: hidden;
-  border-radius: 8px; /* garde ton style actuel si différent */
-}
-
-.hero-image {
-  width: 100%;
-  height: auto;
-  display: block;
-  animation: kenburns 18s ease-in-out infinite alternate;
+  border-radius: 8px;
 }
 
 @keyframes kenburns {
@@ -1226,5 +1213,263 @@ footer small {
   }
   100% {
     transform: scale(1.12) translate(-2%, -1%);
+  }
+}
+
+/* Formulaires génériques (ex: réservation institut) */
+.form-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 60px 25px;
+}
+
+.form-page h1 {
+  margin: 10px 0 8px;
+}
+
+.form-card {
+  margin-top: 30px;
+  padding: 30px;
+  background: white;
+  border: 1px solid #f4c8da;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(90, 29, 70, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: var(--brown);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.form-card input,
+.form-card select,
+.form-card textarea {
+  width: 100%;
+  padding: 11px 12px;
+  color: var(--ink);
+  background: #fffafd;
+  border: 1px solid #edb8d0;
+  border-radius: 7px;
+  font: inherit;
+  font-weight: 400;
+}
+
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus {
+  outline: 0;
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px rgba(230, 91, 153, 0.16);
+}
+
+.form-card .error {
+  color: #b72e69;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.form-card .btn {
+  align-self: flex-start;
+  margin-top: 6px;
+}
+
+@media (max-width: 600px) {
+  .form-page { padding: 40px 18px; }
+  .form-card { padding: 22px; }
+  .form-card .btn { width: 100%; text-align: center; }
+}
+
+/* Cœur favori actif */
+.product form button.heart.active {
+  background: var(--rust);
+  border-color: var(--rust);
+  color: white;
+}
+
+/* Page détail produit */
+.detail .back {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: var(--rust);
+  font-weight: 700;
+}
+
+.detail > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+.detail > div > img {
+  border-radius: 10px;
+  max-height: 520px;
+  object-fit: cover;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.detail .rating {
+  color: var(--gold);
+  font-size: 13px;
+  margin: 10px 0 16px;
+}
+
+.detail .price.big {
+  font-size: 32px;
+  color: var(--rust);
+  font-weight: bold;
+  margin: 14px 0;
+}
+
+.detail .price.big del {
+  font-size: 18px;
+  color: #999;
+  font-weight: normal;
+  margin-left: 12px;
+}
+
+.detail .seller {
+  margin: 18px 0;
+  color: #675b55;
+}
+
+.detail .reassure {
+  margin-top: 22px;
+  font-size: 13px;
+  color: #4a8a5a;
+}
+
+@media (max-width: 860px) {
+  .detail > div {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .detail > div > img {
+    max-height: 320px;
+  }
+}
+
+/* Page panier */
+.cart {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 40px;
+  margin-top: 30px;
+  align-items: start;
+}
+
+.cart section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cart article {
+  display: grid;
+  grid-template-columns: 90px 1fr auto auto;
+  gap: 16px;
+  align-items: center;
+  background: #fffdf9;
+  border: 1px solid #f6dce7;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.cart article img {
+  width: 90px;
+  height: 90px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.cart article small {
+  color: var(--gold);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.cart article h3 {
+  font-size: 15px;
+  margin: 4px 0;
+}
+
+.cart article b {
+  color: var(--rust);
+}
+
+.cart article span {
+  color: #675b55;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.cart aside {
+  background: #fffdf9;
+  border: 1px solid #f6dce7;
+  border-radius: 10px;
+  padding: 26px;
+  position: sticky;
+  top: 20px;
+}
+
+.cart aside h2 {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.cart aside p {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.cart aside hr {
+  border: none;
+  border-top: 1px solid #f0dde6;
+  margin: 14px 0;
+}
+
+.cart aside .total {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.cart aside .btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 16px;
+}
+
+.cart aside small {
+  display: block;
+  margin-top: 12px;
+  color: #9a8478;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+@media (max-width: 820px) {
+  .cart {
+    grid-template-columns: 1fr;
+  }
+  .cart article {
+    grid-template-columns: 70px 1fr;
+    grid-template-rows: auto auto;
+  }
+  .cart article span,
+  .cart article form {
+    grid-column: 2;
+  }
+  .cart aside {
+    position: static;
   }
 }

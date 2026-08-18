@@ -15,7 +15,7 @@
             </form>{% if user.is_authenticated %}
             <form action="{% url 'toggle_favorite' product.id %}" method="post">{% csrf_token %}
                 <input type="hidden" name="next" value="{{ request.path }}">
-                <button class="heart" title="Ajouter ou retirer des favoris" aria-label="Ajouter ou retirer des favoris">♡</button>
+                <button class="heart{% if product.id in favorite_ids %} active{% endif %}" title="Ajouter ou retirer des favoris" aria-label="Ajouter ou retirer des favoris">{% if product.id in favorite_ids %}♥{% else %}♡{% endif %}</button>
             </form>{% endif %}
         </div>
     </div>
