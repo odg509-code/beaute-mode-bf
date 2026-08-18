@@ -2,20 +2,14 @@
 {% load static %}
 
 {% block content %}
-<style>
-  /* ---------- Layout marketplace plein écran ---------- */
-  .market-hero {
-    display: grid;
-    grid-template-columns: 220px minmax(0, 1fr) 220px;
-    gap: 12px;
-    max-width: 1600px;
-    margin: 16px auto 24px;
-    padding: 0 16px;
-    align-items: stretch;
-  }
 
-  /* Barre catégories façon Alibaba, au-dessus du hero */
-  .market-catbar {
+<style>
+
+/* =========================================================
+   BARRE DE MENUS — STYLE MARKETPLACE / ALIBABA
+   ========================================================= */
+
+.market-catbar {
     max-width: 1600px;
     margin: 16px auto 0;
     padding: 10px 20px;
@@ -25,18 +19,25 @@
     background: #fff;
     border: 1px solid #eee;
     border-radius: 10px;
-    font-size: 0.9rem;
+    font-size: .9rem;
     overflow-x: auto;
     white-space: nowrap;
-  }
-  .market-catbar > a {
+}
+
+.market-catbar a {
     color: #2b2b2b;
     text-decoration: none;
-  }
-  .market-catbar > a:hover { color: #c2185b; }
+}
 
-  .catbar-all { position: relative; }
-  .catbar-all summary {
+.market-catbar a:hover {
+    color: #c2185b;
+}
+
+.catbar-all {
+    position: relative;
+}
+
+.catbar-all summary {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -46,296 +47,1157 @@
     color: #2b2b2b;
     padding: 6px 12px;
     border-radius: 6px;
-  }
-  .catbar-all summary::-webkit-details-marker { display: none; }
-  .catbar-all summary:hover,
-  .catbar-all[open] summary {
-    color: #c2185b;
-    border-bottom-color: #c2185b;
-  }
+}
 
-  .catbar-panel {
+.catbar-all summary::-webkit-details-marker {
+    display: none;
+}
+
+.catbar-all summary:hover,
+.catbar-all[open] summary {
+    background: #fdf1f6;
+    color: #c2185b;
+}
+
+.catbar-panel {
     position: absolute;
     top: calc(100% + 8px);
     left: 0;
-    z-index: 30;
+    z-index: 50;
     width: 260px;
-    background: #fff;
+    background: white;
     border: 1px solid #eee;
     border-radius: 10px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, .12);
+    box-shadow: 0 15px 30px rgba(0,0,0,.12);
     padding: 8px 0;
-  }
-  .catbar-panel a {
+}
+
+.catbar-panel a {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 10px 16px;
-    color: #2b2b2b;
-    text-decoration: none;
-    font-size: 0.92rem;
-  }
-  .catbar-panel a:hover { background: #fdf1f6; color: #c2185b; }
+}
 
-  /* Banner central : plein écran, carrousel roulant droite → gauche */
-  .market-banner {
+.catbar-panel a:hover {
+    background: #fdf1f6;
+    color: #c2185b;
+}
+
+
+/* =========================================================
+   GRANDE ZONE MARKETPLACE
+   ========================================================= */
+
+.market-hero {
+    display: grid;
+    grid-template-columns: 220px 1fr 220px;
+    gap: 16px;
+    max-width: 1600px;
+    margin: 16px auto 24px;
+    padding: 0 16px;
+    align-items: stretch;
+}
+
+
+/* =========================================================
+   COLONNES D'AFFICHES
+   ========================================================= */
+
+.promo-side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.promo-side a {
     position: relative;
-    border-radius: 10px;
+    display: block;
+    flex: 1;
+    min-height: 0;
     overflow: hidden;
-    min-height: 590px;
-    max-height: 680px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+.promo-side a img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+}
+
+.promo-side a:hover img {
+    transform: scale(1.06);
+}
+
+.promo-side a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        0deg,
+        rgba(0,0,0,.65),
+        rgba(0,0,0,.08)
+    );
+}
+
+.promo-side a span {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: block;
+    padding: 14px;
+    font-weight: 600;
+    text-shadow: 0 1px 6px rgba(0,0,0,.5);
+}
+
+
+/* =========================================================
+   CARROUSEL CENTRAL
+   ========================================================= */
+
+.market-banner {
+    position: relative;
+    overflow: hidden;
+    min-height: 680px;
+    height: calc(100vh - 190px);
+    max-height: 820px;
     display: flex;
     align-items: flex-end;
     background: #1a1a2e;
-  }
-  .banner-slide {
+    border-radius: 10px;
+}
+
+.banner-slide {
     position: absolute;
     inset: 0;
-    background-size: cover;
-    background-position: center;
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+    object-position: center;
+
     opacity: 0;
     transform: translateX(8%);
+
     animation: slideRollFade 30s ease-in-out infinite;
-  }
-  .banner-slide.slide-1 {
-    background-image: url('{% static "images/hero/image.jpeg" %}');
+
+    z-index: 0;
+}
+
+
+/* =========================================================
+   TES 5 NOUVELLES IMAGES
+   ========================================================= */
+
+.banner-slide.slide-1 {
+    content: url('{% static "images/hero/image.jpeg" %}');
     animation-delay: 0s;
-  }
-  .banner-slide.slide-2 {
-    background-image: url('{% static "images/hero/images.jpeg" %}');
+}
+
+.banner-slide.slide-2 {
+    content: url('{% static "images/hero/images.jpeg" %}');
     animation-delay: 6s;
-  }
-  .banner-slide.slide-3 {
-    background-image: url('{% static "images/hero/imags.jpeg" %}');
+}
+
+.banner-slide.slide-3 {
+    content: url('{% static "images/hero/imags.jpeg" %}');
     animation-delay: 12s;
-  }
-  .banner-slide.slide-4 {
-    background-image: url('{% static "images/hero/imges.jpeg" %}');
+}
+
+.banner-slide.slide-4 {
+    content: url('{% static "images/hero/imges.jpeg" %}');
     animation-delay: 18s;
-  }
-  .banner-slide.slide-5 {
-    background-image: url('{% static "images/hero/iages.jpeg" %}');
+}
+
+.banner-slide.slide-5 {
+    content: url('{% static "images/hero/iages.jpeg" %}');
     animation-delay: 24s;
-  }
+}
 
-  /* Entre depuis la droite, ressort vers la gauche */
-  @keyframes slideRollFade {
-    0%   { opacity: 0; transform: translateX(10%); }
-    8%   { opacity: 1; transform: translateX(0); }
-    28%  { opacity: 1; transform: translateX(0); }
-    36%  { opacity: 0; transform: translateX(-10%); }
-    100% { opacity: 0; transform: translateX(-10%); }
-  }
 
-  /* Scrim global pour lisibilité, quelle que soit l'image affichée */
-  .market-banner::after {
+/* =========================================================
+   ANIMATION
+   ========================================================= */
+
+@keyframes slideRollFade {
+
+    0% {
+        opacity: 0;
+        transform: translateX(10%);
+    }
+
+    8% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    28% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    36% {
+        opacity: 0;
+        transform: translateX(-10%);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-10%);
+    }
+}
+
+
+/* =========================================================
+   VOILE SOMBRE
+   ========================================================= */
+
+.market-banner::after {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: linear-gradient(90deg, rgba(10,6,10,0.72) 0%, rgba(10,6,10,0.42) 38%, rgba(10,6,10,0.05) 65%),
-                linear-gradient(0deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.05) 45%);
-  }
+    pointer-events: none;
 
-  /* Bloc de texte avec fond dédié : toujours lisible */
-  .market-banner-text {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(10,6,10,.72) 0%,
+            rgba(10,6,10,.42) 38%,
+            rgba(10,6,10,.05) 65%
+        ),
+        linear-gradient(
+            0deg,
+            rgba(0,0,0,.5) 0%,
+            rgba(0,0,0,.05) 45%
+        );
+}
+
+
+/* =========================================================
+   TEXTE DU CENTRE
+   ========================================================= */
+
+.market-banner-text {
     position: relative;
     z-index: 2;
+
     padding: 32px 36px;
+
     max-width: 560px;
-    color: #fff;
-  }
-  .market-banner-text .eyebrow { color: #f7c948; letter-spacing: 1px; font-size: 0.8rem; }
-  .market-banner-text h1 {
+
+    color: white;
+}
+
+.market-banner-text .eyebrow {
+    color: #f7c948;
+    letter-spacing: 1px;
+    font-size: .8rem;
+}
+
+.market-banner-text h1 {
     font-size: 2.4rem;
     margin: 8px 0 12px;
     line-height: 1.2;
-    text-shadow: 0 2px 14px rgba(0,0,0,0.5);
-  }
-  .market-banner-text p {
+
+    text-shadow:
+        0 2px 14px rgba(0,0,0,.5);
+}
+
+.market-banner-text p {
     margin: 0 0 20px;
-    opacity: 0.95;
+    opacity: .95;
     font-size: 1rem;
-    text-shadow: 0 1px 8px rgba(0,0,0,0.45);
-  }
-  .market-banner-text .hero-actions a { margin-right: 10px; }
 
-  /* Colonnes promo gauche / droite */
-  .promo-side { display: flex; flex-direction: column; gap: 16px; }
-  .promo-side a {
-    position: relative;
-    display: block;
-    border-radius: 10px;
-    overflow: hidden;
-    flex: 1;
-    min-height: 0;
-    color: #fff;
-    box-shadow: 0 4px 14px rgba(0,0,0,.08);
-    text-decoration: none;
-  }
-  .promo-side a img {
-    width: 100%; height: 100%; object-fit: cover;
-    position: absolute; inset: 0;
-    transition: transform 0.4s ease;
-  }
-  .promo-side a:hover img { transform: scale(1.06); }
+    text-shadow:
+        0 1px 8px rgba(0,0,0,.45);
+}
 
-  /* Trois affiches empilées à gauche du grand carrousel */
-  .promo-left a {
-    min-height: 0;
-    flex: 1 1 0;
-  }
-  .promo-side a::after {
-    content: "";
-    position: absolute; inset: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.1));
-  }
-  .promo-side a span {
-    position: relative; z-index: 2;
-    display: block; padding: 14px;
-    font-weight: 600; align-self: flex-end;
-    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
-  }
+.hero-actions a {
+    margin-right: 10px;
+}
 
-  /* Rangée d'icônes avantages */
-  .perks-row {
+
+/* =========================================================
+   AVANTAGES
+   ========================================================= */
+
+.perks-row {
     max-width: 1600px;
     margin: 0 auto 32px;
     padding: 0 16px;
+
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 14px;
-  }
-  .perk-card {
+}
+
+.perk-card {
     background: #fff;
     border: 1px solid #f0e3ea;
     border-radius: 12px;
-    text-align: center;
-    padding: 18px 10px;
-  }
-  .perk-card .perk-icon { font-size: 1.7rem; margin-bottom: 8px; }
-  .perk-card b { display: block; font-size: 0.88rem; }
-  .perk-card small { color: #888; font-size: 0.78rem; }
 
-  @media (max-width: 900px) {
-    .market-hero { grid-template-columns: 1fr; }
-    .market-banner { order: 1; min-height: 70vh; max-height: none; }
-    .promo-side { order: 2; flex-direction: row; }
-    .promo-side a { min-height: 180px; }
-    .market-catbar { margin: 12px 16px 0; }
-    .perks-row { grid-template-columns: repeat(2, 1fr); }
-    .market-banner-text h1 { font-size: 1.7rem; }
-  }
+    text-align: center;
+
+    padding: 18px 10px;
+}
+
+.perk-card .perk-icon {
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+}
+
+.perk-card b {
+    display: block;
+    font-size: .88rem;
+}
+
+.perk-card small {
+    color: #888;
+    font-size: .78rem;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .market-hero {
+        grid-template-columns: 180px 1fr 180px;
+    }
+
+}
+
+@media (max-width: 900px) {
+
+    .market-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .market-banner {
+        order: 1;
+        min-height: 70vh;
+        height: 70vh;
+        max-height: none;
+    }
+
+    .promo-left {
+        order: 2;
+    }
+
+    .promo-side:not(.promo-left) {
+        order: 3;
+    }
+
+    .promo-side {
+        flex-direction: row;
+    }
+
+    .promo-side a {
+        min-height: 150px;
+    }
+
+    .market-catbar {
+        margin: 12px 16px 0;
+    }
+
+    .perks-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .market-banner-text h1 {
+        font-size: 1.7rem;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .promo-side {
+        flex-direction: column;
+    }
+
+    .perks-row {
+        grid-template-columns: 1fr;
+    }
+
+    .market-banner {
+        min-height: 600px;
+        height: 600px;
+    }
+
+    .market-banner-text {
+        padding: 24px;
+    }
+
+}
+
 </style>
 
-<!-- Navigation horizontale façon Alibaba -->
-<nav class="market-catbar" aria-label="Navigation principale">
-  <details class="catbar-all">
-    <summary>☰ Toutes les catégories</summary>
-    <div class="catbar-panel">
-      <a href="{% url 'shop' %}?category=tissus">🧵 Tissus & Pagnes</a>
-      <a href="{% url 'shop' %}?category=beaute">💄 Beauté & Soins</a>
-      <a href="{% url 'shop' %}?category=parfums">🌸 Parfums</a>
-      <a href="{% url 'shop' %}?category=bijoux">💍 Bijoux & Accessoires</a>
-      <a href="{% url 'institutes' %}">✨ Instituts</a>
-      <a href="{% url 'shop' %}?sort=nouveautes">🆕 Nouveautés</a>
-      <a href="{% url 'shop' %}">🛍️ Toutes les boutiques</a>
-    </div>
-  </details>
 
-  <a class="active" href="{% url 'shop' %}">Accueil</a>
-  <a href="{% url 'shop' %}?category=tissus">Tissus & Pagnes</a>
-  <a href="{% url 'shop' %}?category=beaute">Beauté & Soins</a>
-  <a href="{% url 'shop' %}?category=parfums">Parfums</a>
-  <a href="{% url 'shop' %}?category=bijoux">Bijoux & Accessoires</a>
-  <a href="{% url 'institutes' %}">Instituts</a>
-  <a href="{% url 'shop' %}?sort=nouveautes">Nouveautés</a>
-  <a href="{% url 'shop' %}">Boutiques</a>
+<!-- =========================================================
+     MENU HORIZONTAL
+     ========================================================= -->
+
+<nav class="market-catbar">
+
+    <details class="catbar-all">
+
+        <summary>
+            ☰ Toutes les catégories
+        </summary>
+
+        <div class="catbar-panel">
+
+            <a href="{% url 'shop' %}?category=tissus">
+                🧵 Tissus & Pagnes
+            </a>
+
+            <a href="{% url 'shop' %}?category=beaute">
+                💄 Beauté & Soins
+            </a>
+
+            <a href="{% url 'shop' %}?category=parfums">
+                🌸 Parfums
+            </a>
+
+            <a href="{% url 'shop' %}?category=bijoux">
+                💍 Bijoux & Accessoires
+            </a>
+
+            <a href="{% url 'institutes' %}">
+                ✨ Instituts
+            </a>
+
+            <a href="{% url 'shop' %}?sort=nouveautes">
+                🆕 Nouveautés
+            </a>
+
+            <a href="{% url 'shop' %}">
+                🛍️ Toutes les boutiques
+            </a>
+
+        </div>
+
+    </details>
+
+
+    <a href="{% url 'shop' %}?category=tissus">
+        Tissus & Pagnes
+    </a>
+
+    <a href="{% url 'shop' %}?category=beaute">
+        Beauté & Soins
+    </a>
+
+    <a href="{% url 'shop' %}?category=parfums">
+        Parfums
+    </a>
+
+    <a href="{% url 'institutes' %}">
+        Instituts
+    </a>
+
+    <a href="{% url 'shop' %}?sort=nouveautes">
+        Nouveautés
+    </a>
+
 </nav>
 
+
+<!-- =========================================================
+     MARKETPLACE
+     ========================================================= -->
+
 <div class="market-hero">
-  <!-- Colonne promo gauche -->
-  <div class="promo-side">
-    <a href="{% url 'shop' %}?category=tissus">
-      <img src="{% static 'images/catalog/pagnes-wax.png' %}" alt="Promo pagnes & wax">
-      <span>-20% sur les pagnes wax →</span>
-    </a>
-    <a href="{% url 'shop' %}?category=parfums">
-      <img src="{% static 'images/catalog/coffret-parfums.png' %}" alt="Coffrets parfums">
-      <span>Coffrets parfums en avant →</span>
-    </a>
-  </div>
 
-  <!-- Banner central : plein écran, carrousel roulant -->
-  <div class="market-banner">
-    <div class="banner-slide slide-1"></div>
-    <div class="banner-slide slide-2"></div>
-    <div class="banner-slide slide-3"></div>
-    <div class="banner-slide slide-4"></div>
-    <div class="banner-slide slide-5"></div>
-    <div class="market-banner-text">
-      <p class="eyebrow">L'ART DE VIVRE BURKINABÈ</p>
-      <h1>L'élégance africaine,<br><i>au cœur du Burkina Faso.</i></h1>
-      <p>Des pagnes, parfums, soins et savoir-faire locaux sélectionnés pour vous.</p>
-      <div class="hero-actions">
-        <a class="btn gold" href="{% url 'shop' %}">Explorer les boutiques →</a>
-        <a class="btn light" href="{% url 'signup' %}">Créer mon compte</a>
-      </div>
+
+    <!-- =====================================================
+         AFFICHES À GAUCHE
+         ===================================================== -->
+
+    <div class="promo-side promo-left">
+
+
+        <a href="{% url 'shop' %}?category=tissus">
+
+            <img
+                src="{% static 'images/catalog/pagnes-wax.png' %}"
+                alt="Promotion pagnes et wax"
+            >
+
+            <span>
+                -20% sur les pagnes wax →
+            </span>
+
+        </a>
+
+
+        <a href="{% url 'shop' %}?category=parfums">
+
+            <img
+                src="{% static 'images/catalog/coffret-parfums.png' %}"
+                alt="Coffrets parfums"
+            >
+
+            <span>
+                Coffrets parfums en avant →
+            </span>
+
+        </a>
+
+
+        <a href="{% url 'shop' %}?category=beaute">
+
+            <img
+                src="{% static 'images/catalog/beaute-peau.png' %}"
+                alt="Beauté et soins"
+            >
+
+            <span>
+                Nouveautés beauté & soins →
+            </span>
+
+        </a>
+
     </div>
-  </div>
 
-  <!-- Colonne promo droite -->
-  <div class="promo-side">
-    <a href="{% url 'signup' %}?role=seller">
-      <img src="{% static 'images/catalog/collection-faso.png' %}" alt="Ouvrir une boutique">
-      <span>Vendez sur Beauté & Mode →</span>
-    </a>
-    <a href="{% url 'shop' %}?category=beaute">
-      <img src="{% static 'images/catalog/soins-visage.png' %}" alt="Nouveautés beauté">
-      <span>Nouveautés Beauté →</span>
-    </a>
-  </div>
+
+    <!-- =====================================================
+         GRAND CARROUSEL CENTRAL
+         ===================================================== -->
+
+    <div class="market-banner">
+
+
+        <!-- IMAGE 1 -->
+
+        <img
+            class="banner-slide slide-1"
+            src="{% static 'images/hero/image.jpeg' %}"
+            alt="Offre Beauté et Mode"
+        >
+
+
+        <!-- IMAGE 2 -->
+
+        <img
+            class="banner-slide slide-2"
+            src="{% static 'images/hero/images.jpeg' %}"
+            alt="Offre Beauté et Mode"
+        >
+
+
+        <!-- IMAGE 3 -->
+
+        <img
+            class="banner-slide slide-3"
+            src="{% static 'images/hero/imags.jpeg' %}"
+            alt="Offre Beauté et Mode"
+        >
+
+
+        <!-- IMAGE 4 -->
+
+        <img
+            class="banner-slide slide-4"
+            src="{% static 'images/hero/imges.jpeg' %}"
+            alt="Offre Beauté et Mode"
+        >
+
+
+        <!-- IMAGE 5 -->
+
+        <img
+            class="banner-slide slide-5"
+            src="{% static 'images/hero/iages.jpeg' %}"
+            alt="Offre Beauté et Mode"
+        >
+
+
+        <!-- TEXTE SUR L'IMAGE -->
+
+        <div class="market-banner-text">
+
+            <p class="eyebrow">
+                L'ART DE VIVRE BURKINABÈ
+            </p>
+
+            <h1>
+                L'élégance africaine,
+                <br>
+                <i>au cœur du Burkina Faso.</i>
+            </h1>
+
+            <p>
+                Des pagnes, parfums, soins et savoir-faire
+                locaux sélectionnés pour vous.
+            </p>
+
+            <div class="hero-actions">
+
+                <a
+                    class="btn gold"
+                    href="{% url 'shop' %}"
+                >
+                    Explorer les boutiques →
+                </a>
+
+                <a
+                    class="btn light"
+                    href="{% url 'signup' %}"
+                >
+                    Créer mon compte
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         AFFICHES À DROITE
+         ===================================================== -->
+
+    <div class="promo-side">
+
+        <a href="{% url 'signup' %}?role=seller">
+
+            <img
+                src="{% static 'images/catalog/collection-faso.png' %}"
+                alt="Ouvrir une boutique"
+            >
+
+            <span>
+                Vendez sur Beauté & Mode →
+            </span>
+
+        </a>
+
+
+        <a href="{% url 'shop' %}?category=beaute">
+
+            <img
+                src="{% static 'images/catalog/soins-visage.png' %}"
+                alt="Nouveautés beauté"
+            >
+
+            <span>
+                Nouveautés Beauté →
+            </span>
+
+        </a>
+
+    </div>
+
 </div>
 
-<!-- Rangée d'avantages -->
+
+<!-- =========================================================
+     AVANTAGES
+     ========================================================= -->
+
 <div class="perks-row">
-  <div class="perk-card"><div class="perk-icon">🚚</div><b>Livraison rapide</b><small>Ouaga & Bobo-Dioulasso</small></div>
-  <div class="perk-card"><div class="perk-icon">💵</div><b>Paiement à la livraison</b><small>Payez à réception</small></div>
-  <div class="perk-card"><div class="perk-icon">🏪</div><b>Vendeurs locaux</b><small>Savoir-faire burkinabè</small></div>
-  <div class="perk-card"><div class="perk-icon">✅</div><b>Produits authentiques</b><small>Qualité sélectionnée</small></div>
-  <div class="perk-card"><div class="perk-icon">💬</div><b>Support client</b><small>Assistance rapide</small></div>
+
+
+    <div class="perk-card">
+
+        <div class="perk-icon">
+            🚚
+        </div>
+
+        <b>
+            Livraison rapide
+        </b>
+
+        <small>
+            Ouaga & Bobo-Dioulasso
+        </small>
+
+    </div>
+
+
+    <div class="perk-card">
+
+        <div class="perk-icon">
+            💵
+        </div>
+
+        <b>
+            Paiement à la livraison
+        </b>
+
+        <small>
+            Payez à réception
+        </small>
+
+    </div>
+
+
+    <div class="perk-card">
+
+        <div class="perk-icon">
+            🏪
+        </div>
+
+        <b>
+            Vendeurs locaux
+        </b>
+
+        <small>
+            Savoir-faire burkinabè
+        </small>
+
+    </div>
+
+
+    <div class="perk-card">
+
+        <div class="perk-icon">
+            ✅
+        </div>
+
+        <b>
+            Produits authentiques
+        </b>
+
+        <small>
+            Qualité sélectionnée
+        </small>
+
+    </div>
+
+
+    <div class="perk-card">
+
+        <div class="perk-icon">
+            💬
+        </div>
+
+        <b>
+            Support client
+        </b>
+
+        <small>
+            Assistance rapide
+        </small>
+
+    </div>
+
 </div>
+
+
+<!-- =========================================================
+     OFFRES DU MOMENT
+     ========================================================= -->
 
 <section class="promo-section" aria-label="Offres et annonces">
-  <div class="promo-heading"><p class="eyebrow">À LA UNE</p><h2>Nos offres du moment</h2></div>
-  <div class="promo-track">
-    <a class="promo-card promo-textile" href="{% url 'shop' %}?category=tissus"><img src="{% static 'images/catalog/pagnes-wax.png' %}" alt="Sélection de pagnes colorés"><span><b>Pagnes & Wax</b><small>Des motifs qui racontent votre style</small></span></a>
-    <a class="promo-card promo-perfume" href="{% url 'shop' %}?category=beaute"><img src="{% static 'images/catalog/parfum-luxe.png' %}" alt="Parfum de luxe"><span><b>Parfums d'exception</b><small>Offrez une signature inoubliable</small></span></a>
-    <a class="promo-card promo-beauty" href="{% url 'institutes' %}"><img src="{% static 'images/catalog/soins-visage.png' %}" alt="Produits de soin et maquillage"><span><b>Beauté & soins</b><small>Prendre soin de soi, tout simplement</small></span></a>
-    <a class="promo-card promo-textile" href="{% url 'shop' %}?category=tissus" aria-hidden="true" tabindex="-1"><img src="{% static 'images/catalog/pagnes-wax.png' %}" alt=""><span><b>Pagnes & Wax</b><small>Des motifs qui racontent votre style</small></span></a>
-  </div>
+
+    <div class="promo-heading">
+
+        <p class="eyebrow">
+            À LA UNE
+        </p>
+
+        <h2>
+            Nos offres du moment
+        </h2>
+
+    </div>
+
+
+    <div class="promo-track">
+
+        <a
+            class="promo-card promo-textile"
+            href="{% url 'shop' %}?category=tissus"
+        >
+
+            <img
+                src="{% static 'images/catalog/pagnes-wax.png' %}"
+                alt="Sélection de pagnes colorés"
+            >
+
+            <span>
+                <b>Pagnes & Wax</b>
+                <small>
+                    Des motifs qui racontent votre style
+                </small>
+            </span>
+
+        </a>
+
+
+        <a
+            class="promo-card promo-perfume"
+            href="{% url 'shop' %}?category=beaute"
+        >
+
+            <img
+                src="{% static 'images/catalog/parfum-luxe.png' %}"
+                alt="Parfum de luxe"
+            >
+
+            <span>
+                <b>Parfums d'exception</b>
+                <small>
+                    Offrez une signature inoubliable
+                </small>
+            </span>
+
+        </a>
+
+
+        <a
+            class="promo-card promo-beauty"
+            href="{% url 'institutes' %}"
+        >
+
+            <img
+                src="{% static 'images/catalog/soins-visage.png' %}"
+                alt="Produits de soin et maquillage"
+            >
+
+            <span>
+                <b>Beauté & soins</b>
+                <small>
+                    Prendre soin de soi, tout simplement
+                </small>
+            </span>
+
+        </a>
+
+
+        <a
+            class="promo-card promo-textile"
+            href="{% url 'shop' %}?category=tissus"
+            aria-hidden="true"
+            tabindex="-1"
+        >
+
+            <img
+                src="{% static 'images/catalog/pagnes-wax.png' %}"
+                alt=""
+            >
+
+            <span>
+                <b>Pagnes & Wax</b>
+                <small>
+                    Des motifs qui racontent votre style
+                </small>
+            </span>
+
+        </a>
+
+    </div>
+
 </section>
+
+
+<!-- =========================================================
+     NOS UNIVERS
+     ========================================================= -->
 
 <section class="section categories-spotlight">
-  <p class="eyebrow">NOS UNIVERS</p><h2>Explorez notre sélection</h2>
-  <div class="univers-grid">
-    <div class="univers-card" style="background-image: url('{% static 'images/catalog/collection-faso.png' %}');"><div class="univers-overlay"><h3>Tissus & Pagnes</h3><p>Faso Dan Fani, wax et imprimés à découvrir.</p><a href="{% url 'shop' %}?category=tissus" class="btn small">Explorer →</a></div></div>
-    <div class="univers-card" style="background-image: url('{% static 'images/catalog/beaute-peau.png' %}');"><div class="univers-overlay"><h3>Beauté & Bien-être</h3><p>Des essentiels choisis pour votre rituel.</p><a href="{% url 'shop' %}?category=beaute" class="btn small">Découvrir →</a></div></div>
-    <div class="univers-card" style="background-image: url('{% static 'images/catalog/tissage-noir-blanc.png' %}');"><div class="univers-overlay"><h3>Savoir-faire local</h3><p>Le tissage burkinabè à l'honneur.</p><a href="{% url 'shop' %}" class="btn small">Voir les boutiques →</a></div></div>
-  </div>
+
+    <p class="eyebrow">
+        NOS UNIVERS
+    </p>
+
+    <h2>
+        Explorez notre sélection
+    </h2>
+
+
+    <div class="univers-grid">
+
+
+        <div
+            class="univers-card"
+            style="background-image: url('{% static 'images/catalog/collection-faso.png' %}');"
+        >
+
+            <div class="univers-overlay">
+
+                <h3>
+                    Tissus & Pagnes
+                </h3>
+
+                <p>
+                    Faso Dan Fani, wax et imprimés à découvrir.
+                </p>
+
+                <a
+                    href="{% url 'shop' %}?category=tissus"
+                    class="btn small"
+                >
+                    Explorer →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="univers-card"
+            style="background-image: url('{% static 'images/catalog/beaute-peau.png' %}');"
+        >
+
+            <div class="univers-overlay">
+
+                <h3>
+                    Beauté & Bien-être
+                </h3>
+
+                <p>
+                    Des essentiels choisis pour votre rituel.
+                </p>
+
+                <a
+                    href="{% url 'shop' %}?category=beaute"
+                    class="btn small"
+                >
+                    Découvrir →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="univers-card"
+            style="background-image: url('{% static 'images/catalog/tissage-noir-blanc.png' %}');"
+        >
+
+            <div class="univers-overlay">
+
+                <h3>
+                    Savoir-faire local
+                </h3>
+
+                <p>
+                    Le tissage burkinabè à l'honneur.
+                </p>
+
+                <a
+                    href="{% url 'shop' %}"
+                    class="btn small"
+                >
+                    Voir les boutiques →
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </section>
+
+
+<!-- =========================================================
+     ESPACE COMMUNAUTÉ
+     ========================================================= -->
 
 <section class="section account-section">
-  <div><p class="eyebrow">REJOIGNEZ LA COMMUNAUTÉ</p><h2>Un espace adapté<br><i>à votre activité.</i></h2><p class="lead">Créez un compte, connectez-vous et accédez à votre tableau de bord personnalisé.</p></div>
-  <div class="account-grid">
-    <a href="{% url 'signup' %}?role=customer"><b>🛍️ Client</b><span>Achetez, commandez et suivez vos favoris.</span></a>
-    <a href="{% url 'signup' %}?role=seller"><b>🏪 Vendeur</b><span>Présentez vos produits et suivez vos ventes.</span></a>
-    <a href="{% url 'signup' %}?role=institute"><b>✨ Institut</b><span>Recevez et gérez vos rendez-vous.</span></a>
-    <a href="{% url 'signup' %}?role=stylist"><b>🧵 Styliste</b><span>Développez votre portfolio créatif.</span></a>
-  </div>
+
+    <div>
+
+        <p class="eyebrow">
+            REJOIGNEZ LA COMMUNAUTÉ
+        </p>
+
+        <h2>
+            Un espace adapté
+            <br>
+            <i>à votre activité.</i>
+        </h2>
+
+        <p class="lead">
+            Créez un compte, connectez-vous et accédez à votre
+            tableau de bord personnalisé.
+        </p>
+
+    </div>
+
+
+    <div class="account-grid">
+
+
+        <a href="{% url 'signup' %}?role=customer">
+
+            <b>
+                🛍️ Client
+            </b>
+
+            <span>
+                Achetez, commandez et suivez vos favoris.
+            </span>
+
+        </a>
+
+
+        <a href="{% url 'signup' %}?role=seller">
+
+            <b>
+                🏪 Vendeur
+            </b>
+
+            <span>
+                Présentez vos produits et suivez vos ventes.
+            </span>
+
+        </a>
+
+
+        <a href="{% url 'signup' %}?role=institute">
+
+            <b>
+                ✨ Institut
+            </b>
+
+            <span>
+                Recevez et gérez vos rendez-vous.
+            </span>
+
+        </a>
+
+
+        <a href="{% url 'signup' %}?role=stylist">
+
+            <b>
+                🧵 Styliste
+            </b>
+
+            <span>
+                Développez votre portfolio créatif.
+            </span>
+
+        </a>
+
+    </div>
+
 </section>
 
-<section class="section tan"><p class="eyebrow">SÉLECTIONNÉS POUR VOUS</p><h2>Les coups de cœur du moment</h2><div class="products">{% for product in featured %}{% include 'catalog/_product_card.html' %}{% empty %}<div class="empty-results"><p>Les premières boutiques arrivent bientôt.</p><a class="btn dark" href="{% url 'signup' %}?role=seller">Ouvrir ma boutique</a></div>{% endfor %}</div></section>
 
-<section class="section perfumes"><p class="eyebrow">PARFUMERIE & SOINS</p><h2>Les senteurs <i>de l'Afrique</i></h2><div class="perfume-showcase"><div class="perfume-item"><div class="perfume-image" style="background-image: url('{% static 'images/catalog/coffret-parfums.png' %}');"></div><h3>Parfums prestige</h3><p>Une sélection pour marquer chaque occasion.</p></div><div class="perfume-item"><div class="perfume-image" style="background-image: url('{% static 'images/catalog/rayon-soins.png' %}');"></div><h3>Soins & bien-être</h3><p>Vos produits beauté, réunis au même endroit.</p></div></div></section>
+<!-- =========================================================
+     COUPS DE CŒUR
+     ========================================================= -->
+
+<section class="section tan">
+
+    <p class="eyebrow">
+        SÉLECTIONNÉS POUR VOUS
+    </p>
+
+    <h2>
+        Les coups de cœur du moment
+    </h2>
+
+    <div class="products">
+
+        {% for product in featured %}
+
+            {% include 'catalog/_product_card.html' %}
+
+        {% empty %}
+
+            <div class="empty-results">
+
+                <p>
+                    Les premières boutiques arrivent bientôt.
+                </p>
+
+                <a
+                    class="btn dark"
+                    href="{% url 'signup' %}?role=seller"
+                >
+                    Ouvrir ma boutique
+                </a>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PARFUMERIE & SOINS
+     ========================================================= -->
+
+<section class="section perfumes">
+
+    <p class="eyebrow">
+        PARFUMERIE & SOINS
+    </p>
+
+    <h2>
+        Les senteurs
+        <i>de l'Afrique</i>
+    </h2>
+
+
+    <div class="perfume-showcase">
+
+
+        <div class="perfume-item">
+
+            <div
+                class="perfume-image"
+                style="background-image: url('{% static 'images/catalog/coffret-parfums.png' %}');"
+            ></div>
+
+            <h3>
+                Parfums prestige
+            </h3>
+
+            <p>
+                Une sélection pour marquer chaque occasion.
+            </p>
+
+        </div>
+
+
+        <div class="perfume-item">
+
+            <div
+                class="perfume-image"
+                style="background-image: url('{% static 'images/catalog/rayon-soins.png' %}');"
+            ></div>
+
+            <h3>
+                Soins & bien-être
+            </h3>
+
+            <p>
+                Vos produits beauté, réunis au même endroit.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
 {% endblock %}
