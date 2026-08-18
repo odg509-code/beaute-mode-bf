@@ -6,24 +6,67 @@
   /* ---------- Layout marketplace plein écran ---------- */
   .market-hero {
     display: grid;
-    grid-template-columns: 240px 1fr 220px;
-    gap: 16px;
+    grid-template-columns: 220px minmax(0, 1fr) 220px;
+    gap: 12px;
     max-width: 1600px;
     margin: 16px auto 24px;
     padding: 0 16px;
     align-items: stretch;
   }
 
-  /* Sidebar catégories */
-  .cat-sidebar {
+  /* Barre catégories façon Alibaba, au-dessus du hero */
+  .market-catbar {
+    max-width: 1600px;
+    margin: 16px auto 0;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 26px;
     background: #fff;
     border: 1px solid #eee;
     border-radius: 10px;
-    overflow: hidden;
-    height: fit-content;
+    font-size: 0.9rem;
+    overflow-x: auto;
+    white-space: nowrap;
   }
-  .cat-sidebar ul { list-style: none; margin: 0; padding: 8px 0; }
-  .cat-sidebar li a {
+  .market-catbar > a {
+    color: #2b2b2b;
+    text-decoration: none;
+  }
+  .market-catbar > a:hover { color: #c2185b; }
+
+  .catbar-all { position: relative; }
+  .catbar-all summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 700;
+    color: #2b2b2b;
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+  .catbar-all summary::-webkit-details-marker { display: none; }
+  .catbar-all summary:hover,
+  .catbar-all[open] summary {
+    color: #c2185b;
+    border-bottom-color: #c2185b;
+  }
+
+  .catbar-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 30;
+    width: 260px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, .12);
+    padding: 8px 0;
+  }
+  .catbar-panel a {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -31,18 +74,16 @@
     color: #2b2b2b;
     text-decoration: none;
     font-size: 0.92rem;
-    transition: background 0.15s;
   }
-  .cat-sidebar li a:hover { background: #fdf1f6; color: #c2185b; }
-  .cat-sidebar .cat-icon { font-size: 1.05rem; width: 20px; text-align: center; }
+  .catbar-panel a:hover { background: #fdf1f6; color: #c2185b; }
 
   /* Banner central : plein écran, carrousel roulant droite → gauche */
   .market-banner {
     position: relative;
     border-radius: 10px;
     overflow: hidden;
-    min-height: calc(100vh - 190px);
-    max-height: 820px;
+    min-height: 590px;
+    max-height: 680px;
     display: flex;
     align-items: flex-end;
     background: #1a1a2e;
@@ -54,19 +95,27 @@
     background-position: center;
     opacity: 0;
     transform: translateX(8%);
-    animation: slideRollFade 18s ease-in-out infinite;
+    animation: slideRollFade 30s ease-in-out infinite;
   }
   .banner-slide.slide-1 {
-    background-image: url('{% static "images/hero/pagne-noir-orange.png" %}');
+    background-image: url('{% static "images/hero/image.jpeg" %}');
     animation-delay: 0s;
   }
   .banner-slide.slide-2 {
-    background-image: url('{% static "images/hero/pagne-vert.png" %}');
+    background-image: url('{% static "images/hero/images.jpeg" %}');
     animation-delay: 6s;
   }
   .banner-slide.slide-3 {
-    background-image: url('{% static "images/hero/pagne-gris.png" %}');
+    background-image: url('{% static "images/hero/imags.jpeg" %}');
     animation-delay: 12s;
+  }
+  .banner-slide.slide-4 {
+    background-image: url('{% static "images/hero/imges.jpeg" %}');
+    animation-delay: 18s;
+  }
+  .banner-slide.slide-5 {
+    background-image: url('{% static "images/hero/iages.jpeg" %}');
+    animation-delay: 24s;
   }
 
   /* Entre depuis la droite, ressort vers la gauche */
@@ -111,7 +160,7 @@
   }
   .market-banner-text .hero-actions a { margin-right: 10px; }
 
-  /* Colonne promo droite */
+  /* Colonnes promo gauche / droite */
   .promo-side { display: flex; flex-direction: column; gap: 16px; }
   .promo-side a {
     position: relative;
@@ -119,8 +168,9 @@
     border-radius: 10px;
     overflow: hidden;
     flex: 1;
-    min-height: 182px;
+    min-height: 0;
     color: #fff;
+    box-shadow: 0 4px 14px rgba(0,0,0,.08);
     text-decoration: none;
   }
   .promo-side a img {
@@ -129,6 +179,12 @@
     transition: transform 0.4s ease;
   }
   .promo-side a:hover img { transform: scale(1.06); }
+
+  /* Trois affiches empilées à gauche du grand carrousel */
+  .promo-left a {
+    min-height: 0;
+    flex: 1 1 0;
+  }
   .promo-side a::after {
     content: "";
     position: absolute; inset: 0;
@@ -163,34 +219,60 @@
 
   @media (max-width: 900px) {
     .market-hero { grid-template-columns: 1fr; }
-    .cat-sidebar { order: 2; height: auto; }
     .market-banner { order: 1; min-height: 70vh; max-height: none; }
-    .promo-side { order: 3; flex-direction: row; }
-    .promo-side a { min-height: 140px; }
+    .promo-side { order: 2; flex-direction: row; }
+    .promo-side a { min-height: 180px; }
+    .market-catbar { margin: 12px 16px 0; }
     .perks-row { grid-template-columns: repeat(2, 1fr); }
     .market-banner-text h1 { font-size: 1.7rem; }
   }
 </style>
 
+<!-- Navigation horizontale façon Alibaba -->
+<nav class="market-catbar" aria-label="Navigation principale">
+  <details class="catbar-all">
+    <summary>☰ Toutes les catégories</summary>
+    <div class="catbar-panel">
+      <a href="{% url 'shop' %}?category=tissus">🧵 Tissus & Pagnes</a>
+      <a href="{% url 'shop' %}?category=beaute">💄 Beauté & Soins</a>
+      <a href="{% url 'shop' %}?category=parfums">🌸 Parfums</a>
+      <a href="{% url 'shop' %}?category=bijoux">💍 Bijoux & Accessoires</a>
+      <a href="{% url 'institutes' %}">✨ Instituts</a>
+      <a href="{% url 'shop' %}?sort=nouveautes">🆕 Nouveautés</a>
+      <a href="{% url 'shop' %}">🛍️ Toutes les boutiques</a>
+    </div>
+  </details>
+
+  <a class="active" href="{% url 'shop' %}">Accueil</a>
+  <a href="{% url 'shop' %}?category=tissus">Tissus & Pagnes</a>
+  <a href="{% url 'shop' %}?category=beaute">Beauté & Soins</a>
+  <a href="{% url 'shop' %}?category=parfums">Parfums</a>
+  <a href="{% url 'shop' %}?category=bijoux">Bijoux & Accessoires</a>
+  <a href="{% url 'institutes' %}">Instituts</a>
+  <a href="{% url 'shop' %}?sort=nouveautes">Nouveautés</a>
+  <a href="{% url 'shop' %}">Boutiques</a>
+</nav>
+
 <div class="market-hero">
-  <!-- Sidebar catégories -->
-  <nav class="cat-sidebar">
-    <ul>
-      <li><a href="{% url 'shop' %}?category=tissus"><span class="cat-icon">🧵</span> Tissus & Pagnes</a></li>
-      <li><a href="{% url 'shop' %}?category=beaute"><span class="cat-icon">💄</span> Beauté & Soins</a></li>
-      <li><a href="{% url 'shop' %}?category=parfums"><span class="cat-icon">🌸</span> Parfums</a></li>
-      <li><a href="{% url 'shop' %}?category=bijoux"><span class="cat-icon">💍</span> Bijoux & Accessoires</a></li>
-      <li><a href="{% url 'institutes' %}"><span class="cat-icon">✨</span> Instituts</a></li>
-      <li><a href="{% url 'shop' %}?sort=nouveautes"><span class="cat-icon">🆕</span> Nouveautés</a></li>
-      <li><a href="{% url 'shop' %}"><span class="cat-icon">🛍️</span> Toutes les boutiques</a></li>
-    </ul>
-  </nav>
+  <!-- Colonne promo gauche -->
+  <div class="promo-side">
+    <a href="{% url 'shop' %}?category=tissus">
+      <img src="{% static 'images/catalog/pagnes-wax.png' %}" alt="Promo pagnes & wax">
+      <span>-20% sur les pagnes wax →</span>
+    </a>
+    <a href="{% url 'shop' %}?category=parfums">
+      <img src="{% static 'images/catalog/coffret-parfums.png' %}" alt="Coffrets parfums">
+      <span>Coffrets parfums en avant →</span>
+    </a>
+  </div>
 
   <!-- Banner central : plein écran, carrousel roulant -->
   <div class="market-banner">
     <div class="banner-slide slide-1"></div>
     <div class="banner-slide slide-2"></div>
     <div class="banner-slide slide-3"></div>
+    <div class="banner-slide slide-4"></div>
+    <div class="banner-slide slide-5"></div>
     <div class="market-banner-text">
       <p class="eyebrow">L'ART DE VIVRE BURKINABÈ</p>
       <h1>L'élégance africaine,<br><i>au cœur du Burkina Faso.</i></h1>
